@@ -8,7 +8,7 @@ function HTTPSWrapper(config){
   this.config = config;
 };
 
-HTTPSWrapper.prototype.getFile = function(path, cb){
+HTTPSWrapper.prototype.getContent = function(path, cb){
   var token = this.config.accessToken;
 
   var options = {

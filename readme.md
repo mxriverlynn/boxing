@@ -40,24 +40,35 @@ var client = new boxing.Client({
 });
 ```
 
-## Dropbox Client Methods
+### Client Methods
 
 There aren't very many methods, because I don't need
-very many.
+very many for my current apps.
 
-### Client#accountInfo
+#### Client#accountInfo
 
 ```js
 client.accountInfo(function(err, accountInfo){
   // ...
+  // returns a JS object literal with account information
 });
 ```
 
-### Client#delta
+#### Client#delta
 
 ```js
 client.delta("/some/folder", function(err, delta){
   // ...
+  // returns a JS object literal w/ delta information
+});
+```
+
+#### Client#file
+
+```js
+client.file("/some/file.mp3", function(err, fileBuffer){
+  // ...
+  // returns a file as a Buffer object
 });
 ```
 
