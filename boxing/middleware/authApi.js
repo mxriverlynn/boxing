@@ -1,6 +1,7 @@
-var express = require("express");
-var https = require("https");
+var https = require("../https");
 var querystring = require("querystring");
+
+var https = require("../https");
 
 // dropbox urls and stuff
 // ---------------------
@@ -43,38 +44,7 @@ AuthApi.prototype.requestAccessToken = function(authorizationCode, redirectUrl, 
   };
 
   var tokenPath = this.config.dropboxTokenPath;
-  this.post(tokenPath, postData, cb);
-};
-
-AuthApi.prototype.post = function(path, postData, cb){
-  var postParams = querystring.stringify(postData);
-
-  var options = {
-    hostname: this.config.dropboxHostName,
-    port: 443,
-    method: "POST",
-    path: path,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Content-Length": postParams.length
-    }
-  };
-
-  var httpsRequest = https.request(options, function(httpsRes){
-    httpsRes.setEncoding("utf8");
-    httpsRes.on('data', function (chunk) {
-      var accessToken = JSON.parse(chunk);
-      cb(null, accessToken);
-    });
-  });
-
-  httpsRequest.write(postParams);
-
-  httpsRequest.on("error", function(err){
-    return cb(err);
-  });
-
-  httpsRequest.end();
+  https.post(tokenPath, postData, cb);
 };
 
 module.exports = AuthApi;

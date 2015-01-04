@@ -1,5 +1,3 @@
-var express = require("express");
-var https = require("https");
 var querystring = require("querystring");
 
 var AuthApi = require("./authApi");
@@ -62,6 +60,7 @@ function getAuthApiConfig(config){
 // ----------
 
 function middleware(config){
+  var express = config.express;
   var redirectOnAuth = config.redirect;
 
   var authApiConfig = getAuthApiConfig(config);

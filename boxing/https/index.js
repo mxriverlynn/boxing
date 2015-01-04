@@ -1,30 +1,20 @@
 var https = require("https");
 var querystring = require("querystring");
 
-var paths = {
-  host: "www.dropbox.com",
-  accountInfo: "/1/account/info"
-};
+// HTTP Methods
+// ------------
 
-function Client(config){
-  this.config = config;
-};
+var httpsWrapper = {};
 
-Client.prototype.accountInfo = function(cb){
-  this._get(paths.accountInfo, function(err, accountInfo){
-    cb(err, accountInfo);
-  });
-};
-
-Client.prototype._get = function(path, cb){
+httpsWrapper.get = function(path, token, cb){
   var options = {
-    hostname: paths.host,
+    hostname: "www.dropbox.com",
     port: 443,
     method: "GET",
     path: path,
     headers: {
       "Content-Length": "0",
-      "Authorization": "Bearer " + this.config.accessToken
+      "Authorization": "Bearer " + token
     }
   };
 
@@ -44,13 +34,16 @@ Client.prototype._get = function(path, cb){
   httpsRequest.end();
 };
 
-Client.prototype._post = function(path, postData, cb){
+httpsWrapper.post = function(path, postData, token, cb){
+  if (!cb) { 
+    cb = token; 
+    token = undefined;
+  }
+
   var postParams = querystring.stringify(postData);
 
-  console.log(path, postData);
-
   var options = {
-    hostname: this.config.dropboxHostName,
+    hostname: "www.dropbox.com",
     port: 443,
     method: "POST",
     path: path,
@@ -59,6 +52,10 @@ Client.prototype._post = function(path, postData, cb){
       "Content-Length": postParams.length
     }
   };
+
+  if (token){
+    options.headers.Authorization = "Bearer " + token
+  }
 
   var httpsRequest = https.request(options, function(httpsRes){
     httpsRes.setEncoding("utf8");
@@ -78,4 +75,4 @@ Client.prototype._post = function(path, postData, cb){
   httpsRequest.end();
 };
 
-module.exports = Client;
+module.exports = httpsWrapper;
