@@ -1,0 +1,26 @@
+{
+  "name": "boxing",
+  "version": "0.0.1",
+  "description": "terrible dropbox api and express middleware",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/derickbailey/boxing"
+  },
+  "keywords": [
+    "dropbox",
+    "api",
+    "client",
+    "middleware",
+    "wrapper"
+  ],
+  "author": "Derick Bailey",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/derickbailey/boxing/issues"
+  },
+  "homepage": "https://github.com/derickbailey/boxing"
+}
