@@ -1,4 +1,4 @@
-var https = require("../https");
+var HTTPS = require("../https");
 var querystring = require("querystring");
 
 var https = require("../https");
@@ -8,6 +8,7 @@ var https = require("../https");
 
 function AuthApi(config){
   this.config = config;
+  this.https = new HTTPS();
 }
 
 AuthApi.prototype.getRedirectUrl = function(req){

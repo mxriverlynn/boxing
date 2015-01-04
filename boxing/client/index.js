@@ -1,4 +1,4 @@
-var https = require("../https");
+var HTTPS = require("../https");
 
 // API URL Configuration
 // ---------------------
@@ -14,13 +14,16 @@ var paths = {
 
 function Client(config){
   this.config = config;
+  this.https = new HTTPS({
+    accessToken: config.accessToken
+  });
 };
 
 // Instance Methods
 // ----------------
 
 Client.prototype.accountInfo = function(cb){
-  https.get(paths.accountInfo, this.config.accessToken, function(err, accountInfo){
+  this.https.get(paths.accountInfo, function(err, accountInfo){
     cb(err, accountInfo);
   });
 };
@@ -29,7 +32,7 @@ Client.prototype.delta = function(cursor, cb){
   if (!cb){ cb = cursor; }
 
   var postData = {};
-  https.post(paths.delta, postData, this.config.accessToken, function(err, delta){
+  this.https.post(paths.delta, postData, function(err, delta){
     cb(err, delta);
   });
 };

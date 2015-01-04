@@ -4,9 +4,13 @@ var querystring = require("querystring");
 // HTTP Methods
 // ------------
 
-var httpsWrapper = {};
+function HTTPSWrapper(config){
+  this.config = config;
+};
 
-httpsWrapper.get = function(path, token, cb){
+HTTPSWrapper.prototype.get = function(path, cb){
+  var token = this.config.accessToken;
+
   var options = {
     hostname: "www.dropbox.com",
     port: 443,
@@ -34,12 +38,7 @@ httpsWrapper.get = function(path, token, cb){
   httpsRequest.end();
 };
 
-httpsWrapper.post = function(path, postData, token, cb){
-  if (!cb) { 
-    cb = token; 
-    token = undefined;
-  }
-
+HTTPSWrapper.prototype.post = function(path, postData, cb){
   var postParams = querystring.stringify(postData);
 
   var options = {
@@ -53,6 +52,7 @@ httpsWrapper.post = function(path, postData, token, cb){
     }
   };
 
+  var token = this.config.accessToken;
   if (token){
     options.headers.Authorization = "Bearer " + token
   }
@@ -75,4 +75,4 @@ httpsWrapper.post = function(path, postData, token, cb){
   httpsRequest.end();
 };
 
-module.exports = httpsWrapper;
+module.exports = HTTPSWrapper;
