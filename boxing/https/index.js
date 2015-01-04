@@ -8,6 +8,38 @@ function HTTPSWrapper(config){
   this.config = config;
 };
 
+HTTPSWrapper.prototype.getFile = function(path, cb){
+  var token = this.config.accessToken;
+
+  var options = {
+    hostname: "api-content.dropbox.com",
+    port: 443,
+    method: "GET",
+    path: path,
+    headers: {
+      "Content-Length": "0",
+      "Authorization": "Bearer " + token
+    }
+  };
+
+  var fileBuffer = new Buffer(0);
+  var httpsRequest = https.request(options, function(httpsRes){
+    httpsRes.on("data", function (chunk) {
+      fileBuffer = Buffer.concat([fileBuffer, chunk]);
+    });
+
+    httpsRes.on("end", function(){
+      cb(null, fileBuffer);
+    });
+  });
+
+  httpsRequest.on("error", function(err){
+    return cb(err);
+  });
+
+  httpsRequest.end();
+};
+
 HTTPSWrapper.prototype.get = function(path, cb){
   var token = this.config.accessToken;
 
