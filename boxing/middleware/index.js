@@ -1,6 +1,5 @@
 var querystring = require("querystring");
-
-var AuthApi = require("./authApi");
+var AuthApi = require("../authorization");
 
 // url and path constants
 // ----------------------

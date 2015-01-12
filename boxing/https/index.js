@@ -1,11 +1,12 @@
 var https = require("https");
 var querystring = require("querystring");
+var errorCodes = require("../errorCodes");
 
 // HTTP Methods
 // ------------
 
 function HTTPSWrapper(config){
-  this.config = config;
+  this.config = config || {};
 };
 
 HTTPSWrapper.prototype.getContent = function(path, cb){
@@ -24,6 +25,12 @@ HTTPSWrapper.prototype.getContent = function(path, cb){
 
   var fileBuffer = new Buffer(0);
   var httpsRequest = https.request(options, function(httpsRes){
+
+    // handle error response codes
+    var error = errorCodes.fromResponse(httpsRes);
+    if (error ) { return cb(error); }
+
+    // handle non-error response
     httpsRes.on("data", function (chunk) {
       fileBuffer = Buffer.concat([fileBuffer, chunk]);
     });
@@ -55,6 +62,10 @@ HTTPSWrapper.prototype.get = function(path, cb){
   };
 
   var httpsRequest = https.request(options, function(httpsRes){
+    // handle error response codes
+    var error = errorCodes.fromResponse(httpsRes);
+    if (error ) { return cb(error); }
+
     httpsRes.setEncoding("utf8");
     httpsRes.on('data', function (chunk) {
       console.log(chunk);
@@ -90,6 +101,10 @@ HTTPSWrapper.prototype.post = function(path, postData, cb){
   }
 
   var httpsRequest = https.request(options, function(httpsRes){
+    // handle error response codes
+    var error = errorCodes.fromResponse(httpsRes);
+    if (error ) { return cb(error); }
+
     httpsRes.setEncoding("utf8");
     httpsRes.on('data', function (chunk) {
       console.log(chunk);

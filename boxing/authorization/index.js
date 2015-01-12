@@ -1,8 +1,6 @@
 var HTTPS = require("../https");
 var querystring = require("querystring");
 
-var https = require("../https");
-
 // dropbox urls and stuff
 // ---------------------
 
@@ -45,7 +43,7 @@ AuthApi.prototype.requestAccessToken = function(authorizationCode, redirectUrl, 
   };
 
   var tokenPath = this.config.dropboxTokenPath;
-  https.post(tokenPath, postData, cb);
+  this.https.post(tokenPath, postData, cb);
 };
 
 module.exports = AuthApi;
