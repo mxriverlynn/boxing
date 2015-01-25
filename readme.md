@@ -57,7 +57,7 @@ client.accountInfo(function(err, accountInfo){
 #### Client#delta
 
 ```js
-client.delta("/some/folder", function(err, delta){
+client.delta("(dropbox delta cursor)", function(err, delta){
   // ...
   // returns a JS object literal w/ delta information
 });
