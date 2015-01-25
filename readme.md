@@ -66,9 +66,9 @@ client.delta("(dropbox delta cursor)", function(err, delta){
 #### Client#file
 
 ```js
-client.file("/some/file.mp3", function(err, fileBuffer){
+client.file("/some/file.mp3", function(err, fileStream){
   // ...
-  // returns a file as a Buffer object
+  // returns a file as a stream, coming straight from dropbox
 });
 ```
 

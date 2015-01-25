@@ -43,8 +43,8 @@ Client.prototype.delta = function(cursor, cb){
 
 Client.prototype.file = function(file, cb){
   var filePath = path.join(dropboxPaths.files, file);
-  this.https.getContent(filePath, function(err, fileData){
-    cb(err, fileData);
+  this.https.getContent(filePath, function(err, fileStream){
+    cb(err, fileStream);
   });
 };
 

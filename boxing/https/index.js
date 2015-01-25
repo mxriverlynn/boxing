@@ -30,14 +30,16 @@ HTTPSWrapper.prototype.getContent = function(path, cb){
     var error = errorCodes.fromResponse(httpsRes);
     if (error ) { return cb(error); }
 
-    // handle non-error response
-    httpsRes.on("data", function (chunk) {
-      fileBuffer = Buffer.concat([fileBuffer, chunk]);
-    });
+    // foward the stream
+    return cb(undefined, httpsRes);
 
-    httpsRes.on("end", function(){
-      cb(null, fileBuffer);
-    });
+    // httpsRes.on("data", function (chunk) {
+    //   fileBuffer = Buffer.concat([fileBuffer, chunk]);
+    // });
+
+    // httpsRes.on("end", function(){
+    //   cb(null, fileBuffer);
+    // });
   });
 
   httpsRequest.on("error", function(err){
