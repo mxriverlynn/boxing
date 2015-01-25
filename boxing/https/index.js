@@ -68,7 +68,6 @@ HTTPSWrapper.prototype.get = function(path, cb){
 
     httpsRes.setEncoding("utf8");
     httpsRes.on('data', function (chunk) {
-      console.log(chunk);
       var accessToken = JSON.parse(chunk);
       cb(null, accessToken);
     });
@@ -107,7 +106,6 @@ HTTPSWrapper.prototype.post = function(path, postData, cb){
 
     httpsRes.setEncoding("utf8");
     httpsRes.on('data', function (chunk) {
-      console.log(chunk);
       var accessToken = JSON.parse(chunk);
       cb(null, accessToken);
     });

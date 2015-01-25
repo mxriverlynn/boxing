@@ -32,7 +32,10 @@ Client.prototype.accountInfo = function(cb){
 Client.prototype.delta = function(cursor, cb){
   if (!cb){ cb = cursor; }
 
-  var postData = {};
+  var postData = {
+    cursor: cursor
+  };
+
   this.https.post(dropboxPaths.delta, postData, function(err, delta){
     cb(err, delta);
   });
