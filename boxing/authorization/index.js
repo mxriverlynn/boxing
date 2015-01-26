@@ -13,7 +13,7 @@ function AuthApi(config){
 // ----------------
 
 AuthApi.prototype.getRedirectUrl = function(req){
-  var protocol = req.protocol;
+  var protocol = getProtocol(req);
   var hostWithPort = req.get("host");
   var baseUrl = req.baseUrl;
   var redirectPath = this.config.redirectPath;
@@ -48,6 +48,14 @@ AuthApi.prototype.requestAccessToken = function(authorizationCode, redirectUrl, 
   var tokenPath = this.config.dropboxTokenPath;
   this.https.post(tokenPath, postData, cb);
 };
+
+// helpers
+// -------
+
+function getProtocol(req){
+  var protocol = req.get("x-forwarded-proto") || req.protocol;
+  return protocol;
+}
 
 // Exports
 // -------
