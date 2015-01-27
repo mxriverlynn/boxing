@@ -7,7 +7,8 @@ var HTTPS = require("../https");
 var dropboxPaths = {
   accountInfo: "/1/account/info",
   delta: "/1/delta",
-  files: "/1/files/auto/"
+  files: "/1/files/auto/",
+  createFolder: "/1/fileops/create_folder"
 };
 
 // Dropbox Client
@@ -45,6 +46,19 @@ Client.prototype.file = function(file, cb){
   var filePath = path.join(dropboxPaths.files, file);
   this.https.getContent(filePath, function(err, fileStream){
     cb(err, fileStream);
+  });
+};
+
+Client.prototype.createFolder = function(path, cb){
+  if (!cb){ cb = cursor; }
+
+  var postData = {
+    root: "auto",
+    path: path
+  };
+
+  this.https.post(dropboxPaths.createFolder, postData, function(err, delta){
+    cb(err, delta);
   });
 };
 
