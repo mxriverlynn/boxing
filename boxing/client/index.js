@@ -7,6 +7,7 @@ var HTTPS = require("../https");
 var dropboxPaths = {
   accountInfo: "/1/account/info",
   delta: "/1/delta",
+  deltaLatestCursor: "/1/delta/latest_cursor",
   files: "/1/files/auto/",
   createFolder: "/1/fileops/create_folder"
 };
@@ -39,6 +40,22 @@ Client.prototype.delta = function(cursor, cb){
 
   this.https.post(dropboxPaths.delta, postData, function(err, delta){
     cb(err, delta);
+  });
+};
+
+Client.prototype.deltaLatestCursor = function(path, cb){
+  if (!cb){ 
+    cb = path; 
+    path = undefined;
+  }
+
+  var postData = {};
+  if (path){
+    postData.path = path;
+  }
+
+  this.https.post(dropboxPaths.deltaLatestCursor, postData, function(err, result){
+    cb(err, result.cursor);
   });
 };
 
