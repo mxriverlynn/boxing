@@ -108,7 +108,6 @@ HTTPSWrapper.prototype.post = function(path, postData, cb){
 
     httpsRes.setEncoding("utf8");
     httpsRes.on('data', function (chunk) {
-      console.log(chunk);
       chunkyStuff += chunk;
     });
 
