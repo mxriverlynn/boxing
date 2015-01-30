@@ -68,7 +68,7 @@ HTTPSWrapper.prototype.get = function(path, cb){
     });
 
     httpsRes.on("end", function(){
-      var jsonData = JSON.parse(chunk);
+      var jsonData = JSON.parse(chunkyChicken);
       cb(null, jsonData);
     });
   });
