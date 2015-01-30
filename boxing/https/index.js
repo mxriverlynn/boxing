@@ -32,14 +32,6 @@ HTTPSWrapper.prototype.getContent = function(path, cb){
 
     // foward the stream
     return cb(undefined, httpsRes);
-
-    // httpsRes.on("data", function (chunk) {
-    //   fileBuffer = Buffer.concat([fileBuffer, chunk]);
-    // });
-
-    // httpsRes.on("end", function(){
-    //   cb(null, fileBuffer);
-    // });
   });
 
   httpsRequest.on("error", function(err){
@@ -68,10 +60,16 @@ HTTPSWrapper.prototype.get = function(path, cb){
     var error = errorCodes.fromResponse(httpsRes);
     if (error ) { return cb(error); }
 
+    var chunkyChicken = "";
+
     httpsRes.setEncoding("utf8");
     httpsRes.on('data', function (chunk) {
-      var accessToken = JSON.parse(chunk);
-      cb(null, accessToken);
+      chunkyChicken += chunk;
+    });
+
+    httpsRes.on("end", function(){
+      var jsonData = JSON.parse(chunk);
+      cb(null, jsonData);
     });
   });
 
@@ -106,10 +104,17 @@ HTTPSWrapper.prototype.post = function(path, postData, cb){
     var error = errorCodes.fromResponse(httpsRes);
     if (error ) { return cb(error); }
 
+    var chunkyStuff = "";
+
     httpsRes.setEncoding("utf8");
     httpsRes.on('data', function (chunk) {
-      var accessToken = JSON.parse(chunk);
-      cb(null, accessToken);
+      console.log(chunk);
+      chunkyStuff += chunk;
+    });
+
+    httpsRes.on("end", function(){
+      var jsonData = JSON.parse(chunkyStuff);
+      cb(null, jsonData);
     });
   });
 
