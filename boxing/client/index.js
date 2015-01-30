@@ -1,3 +1,4 @@
+var _ = require("underscore");
 var path = require("path");
 var HTTPS = require("../https");
 
@@ -9,7 +10,8 @@ var dropboxPaths = {
   delta: "/1/delta",
   deltaLatestCursor: "/1/delta/latest_cursor",
   files: "/1/files/auto/",
-  createFolder: "/1/fileops/create_folder"
+  createFolder: "/1/fileops/create_folder",
+  search: "/1/search/auto/"
 };
 
 // Dropbox Client
@@ -22,14 +24,17 @@ function Client(config){
   });
 };
 
-// Instance Methods
-// ----------------
+// Account Methods
+// ---------------
 
 Client.prototype.accountInfo = function(cb){
   this.https.get(dropboxPaths.accountInfo, function(err, accountInfo){
     cb(err, accountInfo);
   });
 };
+
+// Delta Methods
+// -------------
 
 Client.prototype.delta = function(cursor, cb){
   if (!cb){ cb = cursor; }
@@ -59,6 +64,9 @@ Client.prototype.deltaLatestCursor = function(path, cb){
   });
 };
 
+// File / Folder Methods
+// ---------------------
+
 Client.prototype.file = function(file, cb){
   var filePath = path.join(dropboxPaths.files, file);
   this.https.getContent(filePath, function(err, fileStream){
@@ -74,8 +82,53 @@ Client.prototype.createFolder = function(path, cb){
     path: path
   };
 
-  this.https.post(dropboxPaths.createFolder, postData, function(err, delta){
-    cb(err, delta);
+  this.https.post(dropboxPaths.createFolder, postData, function(err, result){
+    cb(err, result);
+  });
+};
+
+Client.prototype.folderExists = function(path, cb){
+  var options = {
+    file_limit: 0
+  };
+
+  this.search(path, options, function(err, results){
+    if (err) { return cb(err); }
+
+    if (results.length === 0) {
+      return cb(undefined, false);
+    }
+
+    var result = results[0];
+    var exists = result.is_dir;
+
+    return cb(undefined, exists);
+  });
+};
+
+// Content Related Methods
+// -----------------------
+
+Client.prototype.search = function(query, options, cb){
+  if (!cb) { 
+    cb = options;
+    options = {};
+  }
+
+  var rootPath = options.path || "";
+  options.path = undefined;
+
+  options = _.defaults(options, {
+    query: query,
+    include_deleted: false,
+    include_membership: false,
+    file_limit: 1000
+  });
+
+  var url = path.join(dropboxPaths.search, rootPath);
+
+  this.https.post(url, options, function(err, result){
+    cb(err, result);
   });
 };
 

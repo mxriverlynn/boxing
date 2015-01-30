@@ -40,12 +40,11 @@ var client = new boxing.Client({
 });
 ```
 
-### Client Methods
+From here, you can call the dropbox API methods.
 
-There aren't very many methods, because I don't need
-very many for my current apps.
+### Client#accountInfo
 
-#### Client#accountInfo
+Get the account info for the user
 
 ```js
 client.accountInfo(function(err, accountInfo){
@@ -54,7 +53,26 @@ client.accountInfo(function(err, accountInfo){
 });
 ```
 
-#### Client#delta
+### Client#deltaLatestCursor
+
+Get the latest delta cursor. This can be used to prevent
+the full list of all files from coming back, the first time
+you call the `delta` method
+
+```js
+client.deltaLatestCursor(function(err, deltaCursor){
+  // ...
+});
+```
+
+Be sure to save the cursor result somewhere, so you can use 
+this on the next call to the `delta` method.
+
+### Client#delta
+
+Get the latest set of changes, based on the "cursor" that
+you pass in. If no cursor is specified, you will receive
+notice of everything in the dropbox account.
 
 ```js
 client.delta("(dropbox delta cursor)", function(err, delta){
@@ -63,12 +81,41 @@ client.delta("(dropbox delta cursor)", function(err, delta){
 });
 ```
 
-#### Client#file
+Be sure to save the `delta.cursor` result somewhere, so you can use 
+this on the next call to the `delta` method.
+
+### Client#file
+
+Stream the file contents down from Dropbox
 
 ```js
 client.file("/some/file.mp3", function(err, fileStream){
   // ...
   // returns a file as a stream, coming straight from dropbox
+});
+```
+
+### Client#folderExists
+
+Check to see if a specified folder exists.
+
+```js
+client.folderExists("/some/folder", function(err, exists){
+  // ...
+});
+```
+
+The `exists` boolean returns true if the specified folder is
+found, and is a folder (not a file).
+
+### Client#createFolder
+
+Create a folder in the user's Dropbox. This method assumes
+"auto" path root.
+
+```js
+client.createFodler("/some/folder", function(err, result){
+  // ...
 });
 ```
 

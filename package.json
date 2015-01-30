@@ -1,6 +1,6 @@
 {
   "name": "boxing",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "terrible dropbox api and express middleware",
   "main": "boxing/index.js",
   "scripts": {
@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/derickbailey/boxing/issues"
   },
-  "homepage": "https://github.com/derickbailey/boxing"
+  "homepage": "https://github.com/derickbailey/boxing",
+  "dependencies": {
+    "underscore": "^1.7.0"
+  }
 }
