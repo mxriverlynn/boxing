@@ -89,7 +89,8 @@ Client.prototype.createFolder = function(path, cb){
 
 Client.prototype.folderExists = function(path, cb){
   var options = {
-    file_limit: 0
+    file_limit: 0,
+    include_deleted: false
   };
 
   this.search(path, options, function(err, results){
