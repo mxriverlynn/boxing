@@ -1,6 +1,6 @@
 {
   "name": "boxing",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "terrible dropbox api and express middleware",
   "main": "boxing/index.js",
   "scripts": {
