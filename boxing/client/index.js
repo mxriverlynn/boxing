@@ -83,7 +83,15 @@ Client.prototype.createFolder = function(path, cb){
   };
 
   this.https.post(dropboxPaths.createFolder, postData, function(err, result){
-    cb(err, result);
+    if (err) {
+      if (err.code === 403){
+        return cb(undefined, {
+          exists: true
+        });
+      }
+      cb(err); 
+    }
+    cb(undefined, result);
   });
 };
 
